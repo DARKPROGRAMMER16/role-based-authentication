@@ -7,5 +7,7 @@
 2. .env file should contain
 
   APP_DB=mongodb://localhost:27017/role-auth
+  
   APP_PORT=5000
+  
   APP_SECRET=QWERTYUIOP
