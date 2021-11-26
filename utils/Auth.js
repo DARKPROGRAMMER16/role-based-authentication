@@ -132,6 +132,7 @@ const userAuth = passport.authenticate("jwt", {session:false});
 // serialize user
 const serializeUser = user => {
     return {
+        role:user.role,
         username:user.username,
         email:user.email,
         name:user.name,
@@ -157,7 +158,40 @@ const checkRole = roles => (req,res,next) =>
 //     })
 // }
 
+
+// get all data of user roles
+const get_all_users = async(res) => {
+    try {
+
+        const a_users = await User.find({role:"user"});
+        res.status(200).json(a_users);
+        
+    } catch (err) {
+        return res.status(500).json({
+            message:"Internal server error",
+            success:false
+        })
+    }
+}
+
+const get_all_users_admin = async(res) => {
+    try {
+
+        const a_users_admin = await User.find({role:["user","admin"]})
+        res.status(200).json(a_users_admin);
+        
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({
+            message:"Internal server error",
+            success:false
+        })
+    }
+}
+
 module.exports = {
+    get_all_users,
+    get_all_users_admin,
     checkRole,
     userAuth,
     userLogin,

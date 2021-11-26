@@ -1,7 +1,7 @@
 const router  = require('express').Router();
 
 // requiring user register function
-const { userRegister,userLogin,userAuth,serializeUser,checkRole } = require('../utils/Auth.js');
+const { userRegister,userLogin,userAuth,serializeUser,checkRole,get_all_users,get_all_users_admin } = require('../utils/Auth.js');
 
 // user registration router
 router.post('/register-user', async(req,res) => {
@@ -61,9 +61,17 @@ router.get('/admin-protected',userAuth,checkRole(['admin']), async(req,res) => {
     return res.json("hello admin");
 });
 
+router.get('/admin-protected-get-users',userAuth,checkRole(['admin']), async(req,res) => {
+    await get_all_users(res);
+});
+
 // Super Admin protected route
 router.get('/super-admin-protected',userAuth,checkRole(['superadmin']), async(req,res) => {
     return res.json("hello superadmin");
+});
+
+router.get('/super-admin-protected-get-all-users',userAuth,checkRole(['superadmin']), async(req,res) => {
+    await get_all_users_admin(res);
 });
 
 // Super Admin and Admin protected route
